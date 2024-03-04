@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\GroupsTransmissionController;
+use App\Http\Controllers\BotController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +19,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function(){ return view('dashboard'); });
+
+// Groups
+Route::prefix('/groups')
+    ->group(function(){
+        Route::get('/get-groups', [GroupsTransmissionController::class, 'index'])
+            ->name('group-list');
+
+        Route::get('/new-groups', [GroupsTransmissionController::class, 'new_groups'])
+            ->name('group-new');
+});
+
+Route::prefix('/bot')
+    ->group(function(){
+        Route::Post('send-groups', [BotController::class, 'send_message']);
+    });
